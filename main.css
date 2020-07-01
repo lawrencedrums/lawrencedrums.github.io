@@ -1,0 +1,13 @@
+canvas {
+    /* border: 1px solid black; */
+    background-color: black;
+}
+
+body {
+    margin: 0;
+}
+
+.btn {
+    position: absolute;
+    margin: 20px;
+}

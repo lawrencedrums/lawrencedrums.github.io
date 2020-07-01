@@ -1,26 +1,35 @@
-let arrSize = 50
-let mainArr = getNewArr();
-
+let arraySize = 100
 let canvas = document.getElementById('mainCanvas');
 let c = canvas.getContext('2d');
 
 // Make canvas as large as the user's screen
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-// c.font = "20px Arial";
-// c.textAlign = "center";
 
-// Create rectangles with colour and length based the number size in array
-for (let i = 0; i < arrSize; i++) {
-    c.fillStyle = getHSL(mainArr[i]);
+function getNewArr() {
+    // Poplate an array of 1 to arraySize
+    let array = [];
+    for(let i = 1; i <= arraySize; i++) {
+        array.push(i);
+    }
 
-    rect = getPos(i, mainArr[i])
+    shuffle(array);
+    c.clearRect(0, 0, canvas.width, canvas.height);
 
-    c.fillRect(rect.x, canvas.height - 30, rect.width, rect.height)
-    // c.fillText(mainArr[i], rect.x, canvas.height - 20);
-    // c.fillRect(90 + i * 20, canvas.height / 2 + 10, 18, mainArr[i] * 6)
+    for (let i = 0; i < arraySize; i++) { 
+        drawArr(i, array); 
+    }
 }
 
+// Create rectangles with colour and length based the number size in array
+// Each with a set time delay
+function drawArr(i, array) {
+    setTimeout(function() {
+        c.fillStyle = getHSL(array[i]);
+        let rect = getPos(i, array[i]);
+        c.fillRect(rect.x, rect.y, rect.width, rect.height);
+    }, 3 * i);
+}
 
 function shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
@@ -37,26 +46,15 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-    return array;
-  }
-
-// Generate new random array
-function getNewArr() {
-    let array = [];
-    for(let i = 1; i <= arrSize; i++){
-        array.push(i);
-    }
-    shuffle(array);
-    return array; 
 }
 
 // Find HSL Hue value based on number size in array
 function getHSL(i) {
-    if (i === 0 || i === arrSize) {
+    if (i === 0 || i === arraySize) {
         return "hsl(0, 100%, 50%)";
     }
     else {
-        let hue = 360 / arrSize * i;
+        let hue = 360 / arraySize * i;
         return "hsl(" + hue + ", 100%, 50%)";
     }
 }
@@ -64,11 +62,10 @@ function getHSL(i) {
 // Find the position of where each rectangle should start
 function getPos(i, num) {
     let rectangle = {
-        x: 10 + i * (canvas.width - 20) / arrSize,
-        width: (canvas.width - 20) / arrSize - 4,
-        height: ((canvas.height - 60) / arrSize) * -num
+        x: 10 + i * (canvas.width - 20) / arraySize,
+        y: canvas.height - 10,
+        width: (canvas.width - 20) / arraySize - 4,
+        height: ((canvas.height - 50) / arraySize) * -num
     };
-    return rectangle
+    return rectangle;
 }
-
-console.log(rect);
