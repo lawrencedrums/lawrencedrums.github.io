@@ -7,6 +7,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 function getNewArr() {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+
     // Poplate an array of 1 to arraySize
     let array = [];
     for(let i = 1; i <= arraySize; i++) {
@@ -14,7 +16,6 @@ function getNewArr() {
     }
 
     shuffle(array);
-    c.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < arraySize; i++) { 
         drawArr(i, array); 
@@ -28,7 +29,7 @@ function drawArr(i, array) {
         c.fillStyle = getHSL(array[i]);
         let rect = getPos(i, array[i]);
         c.fillRect(rect.x, rect.y, rect.width, rect.height);
-    }, 3 * i);
+    }, 5 * i);
 }
 
 function shuffle(array) {
