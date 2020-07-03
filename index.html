@@ -4,14 +4,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sorting Visualized.</title>
+        <title>Sorting Visualizer</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="main.css">
     </head>
-    <body onload=getNewArr();>
-        <button onclick=getNewArr(); type="button" id="sortbtn" class="btn btn-outline-light">Randomize</button>
-        <!-- <input type="submit" onclick="getNewArr();" valuse="click"> -->
+    <body onload=init();>
+        <button onclick=randomArr(); type="button" id="randombtn" class="btn btn-outline-light">Randomize</button>
+        <button onclick=bubbleSort(); type="button" id="sortbtn" class="btn btn-outline-light">Sort</button>
         <canvas id="mainCanvas"></canvas>
         <script src="main.js"></script>
     </body>
