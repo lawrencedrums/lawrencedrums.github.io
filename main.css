@@ -10,11 +10,23 @@ body {
 #randombtn {
     position: absolute;
     top: 2%;
-    left: 2%;
+    left: 1%;
 }
 
-#sortbtn {
+/* #bubblesort {
     position: absolute;
     top: 8%;
     left: 2%;
+}
+
+#insertionsort {
+    position: absolute;
+    top: 14%;
+    left: 2%;
+} */
+
+.btn-group {
+    position: absolute;
+    top: 8%;
+    left: 1%;
 }
