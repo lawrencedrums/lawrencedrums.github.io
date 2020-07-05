@@ -8,11 +8,11 @@ A sorting algorithm is a process that puts elements of a list in a certain order
  - Solidify understanding of sorting algorithms of different efficiency.
  - Familiarise with version control via GitHub.
 ### MILESTONES
-Version 1: 2 to 3 algorithms
+ - [x] Version 1: 2 to 3 algorithms
  - Create a simple visualizer with 2 to 3 working algorithms. Basic, simple and effective styling. 
 
-Version 2: More algorithms, mobile version
+ - [ ] Version 2: More algorithms, mobile version
  - Implement 2 to 3 more algorithms. Include mobile-friendly site design.
 
-Version 3: Refine styling, add options
+ - [ ] Version 3: Refine styling, add options
  - Finalize webapp styling including color options. Add a menu for options like sorting speed, array size, etc.
