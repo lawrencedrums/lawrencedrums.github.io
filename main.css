@@ -14,7 +14,7 @@ body {
 }
 
 #algoselect {
-    max-width: 10%;
+    width: auto;
     position: absolute;
     top: 4rem;
     left: 1%;
