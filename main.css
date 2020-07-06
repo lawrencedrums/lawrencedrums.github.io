@@ -9,24 +9,19 @@ body {
 
 #randombtn {
     position: absolute;
-    top: 2%;
+    top: 1rem;
     left: 1%;
 }
 
-/* #bubblesort {
+#algoselect {
+    max-width: 10%;
     position: absolute;
-    top: 8%;
-    left: 2%;
+    top: 4rem;
+    left: 1%;
 }
 
-#insertionsort {
+#startbtn {
     position: absolute;
-    top: 14%;
-    left: 2%;
-} */
-
-.btn-group {
-    position: absolute;
-    top: 8%;
+    top: 7rem;
     left: 1%;
 }

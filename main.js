@@ -1,46 +1,69 @@
 let array, canvas, ctx, rect, num;
-let arraySize = 100;
-let delayTime = 8;
+let arraySize = 120, delayTime = 6, landscape = 1;
 
 function init() {
     disableButtons();
     canvas = document.getElementById('mainCanvas');
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext("2d");
 
-    // Make canvas as large as the user's screen
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Base array size and sort speed on device orientation
+    if (window.innerHeight / window.innerWidth > 1.5) {
+        arraySize = 50;
+        delayTime = 15;
+        landscape = 0;
+    }
 
     // Populate new array
     array = [];
     for (let i = 1; i <= arraySize; i++) {
         array.push(i);
     }
-
-    drawArr(array);
+    drawArr();
 
     // Randomize after a set delay
     setTimeout(() => {
-        randomizeArray(array);
+        randomizeArray();
     }, 1000);
-}
+
+    resizeCanvas();
+
+    // Run the algorithm selected when start button is clicked
+    document.getElementById("startbtn").addEventListener("click", function() {
+        let algo = document.getElementById("algoselect");
+
+        switch (algo.value) {
+            case "bubble":
+                bubbleSort();
+                break;
+            case "insertion":
+                insertionSort();
+                break;
+            case "merge":
+                mergeSort(array);
+                break;
+            default:
+        }
+    }, false);
+} 
 
 async function randomizeArray() {
-    disableButtons();
+    disableButtons("randomize");
 
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    await prettierShuffle(array);
+    await prettierShuffle();
     enableButtons();
 }
 
 // Draw rectangles in array instantly. Colour rectangle black if that number is being sorted.
-function drawArr(array, beingSorted) {
+function drawArr(beingSorted) {  
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < arraySize; i++) { 
-
         if (i == beingSorted) {
             ctx.fillStyle = "hsl(0, 0%, 0%)";
         } else {
@@ -54,23 +77,23 @@ function drawArr(array, beingSorted) {
 async function bubbleSort() {
     let n, i, j;
     let end = arraySize;
-    disableButtons();
+    disableButtons("sorting");
 
     for (n = 0; n < end; end--) {
         for (i = 0, j = 1; i < arraySize; i++, j++) {
             if (array[i] > array[j]) {
-                await swap(array, i, j);
-                drawArr(array, j);
+                await swap(i, j);
+                drawArr(j);
             }
         }
     }
-    drawArr(array, j);
+    drawArr(j);
     enableButtons();
 }
 
 async function insertionSort() {
     let key, i, j;
-    disableButtons();
+    disableButtons("sorting");
 
     for (i = 1; i < arraySize; i++) {
         key = array[i];
@@ -79,16 +102,54 @@ async function insertionSort() {
         while (j >= 0 && array[j] > key) {
             await sleep(delayTime);
             array[j + 1] = array[j];
-            drawArr(array, j);
+            drawArr(j);
             j--;
         }
         array[j + 1] = key;
     }
-    drawArr(array);
+    drawArr();
     enableButtons();
 }
 
-async function swap(array, x, y) {
+function mergeSort(array) {
+    let middle, left, right;
+
+    if (array.length > 1) {
+        middle = array.length / 2;
+        left = array.splice(0, middle);
+        right = array;
+
+        console.log(left, right);
+        return merge(mergeSort(left), mergeSort(right));
+    } else {
+        return array;
+    }
+}
+
+function merge(left, right) {
+    let resultArray = [], leftIndex = 0, rightIndex = 0;
+    while (left.length > leftIndex && right.length > rightIndex) {
+
+        // Push left into array if it is smaller vice versa
+        if (left[leftIndex] < right[rightIndex]) {
+        resultArray.push(left[leftIndex]);
+        leftIndex++;
+        } else {
+        resultArray.push(right[rightIndex]);
+        rightIndex++;
+        }
+    }
+    
+    if (leftIndex < rightIndex) {
+        console.log(resultArray);
+        return resultArray.concat(left.slice(leftIndex));
+    } else {
+        console.log(resultArray);
+        return resultArray.concat(right.slice(rightIndex));
+    }
+}
+
+async function swap(x, y) {
     await sleep(delayTime);
     let temp = array[x];
     array[x] = array[y];
@@ -99,18 +160,31 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function disableButtons() {
+function disableButtons(state) {
+    document.getElementById("algoselect").disabled = true;
     document.getElementById("randombtn").disabled = true;
-    document.getElementById("sorts").disabled = true;
+    document.getElementById("startbtn").disabled = true;
+
+    switch (state) {
+        case "randomize":
+            console.log("Randomizing...")
+            break;
+        case "sorting":
+            console.log("Sorting...")
+            break;
+        default:
+            console.log("Initializing..."); 
+    }
 }
 
 function enableButtons() {
+    document.getElementById("algoselect").disabled = false;
     document.getElementById("randombtn").disabled = false;
-    document.getElementById("sorts").disabled = false;
+    document.getElementById("startbtn").disabled = false;
 }
 
 // A shuffle that looks prettier and more "random"
-async function prettierShuffle(array) {
+async function prettierShuffle() {
     let shuffledNumber = [], randomIndex, randomIndexTwo;
 
     // As long as there's unshuffled index left...
@@ -127,9 +201,9 @@ async function prettierShuffle(array) {
             shuffledNumber.includes(randomIndex) == false && shuffledNumber.includes(randomIndexTwo) == false) {
 
             // Swap them and push them into shuffled list of numbers
-            await swap(array, randomIndex, randomIndexTwo);
+            await swap(randomIndex, randomIndexTwo); 
             shuffledNumber.push(randomIndex, randomIndexTwo)
-            drawArr(array);
+            drawArr();
         }
     }
 }
@@ -155,19 +229,8 @@ function getPos(i, num) {
     return rectangle;
 }
 
-// Fisher–Yates shuffle algorithm referenced from stackoverflow
-// async function shuffle(array) {
-//     let currentIndex = arraySize, randomIndex;
-  
-//     // While there remain elements to shuffle...
-//     while (0 !== currentIndex) {
-  
-//         // Pick a remaining element...
-//         randomIndex = Math.floor(Math.random() * currentIndex);
-//         currentIndex -= 1;
-    
-//         // And swap it with the current element.
-//         await swap(array, currentIndex, randomIndex);
-//         drawArr(array);
-//     }
-// }
+// Resize canvas in the event of size or orientation change
+function resizeCanvas() {
+    window.addEventListener('resize', drawArr, false);
+    window.addEventListener('orientationchange', drawArr, false);
+}
