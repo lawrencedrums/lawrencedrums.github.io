@@ -1,17 +1,10 @@
 let array, canvas, ctx, rect, num;
-let arraySize = 120, delayTime = 6, landscape = 1;
+let arraySize = 100, landscape = 1, delayTime = 6, pendingRecursion = 0;
 
 function init() {
     disableButtons();
     canvas = document.getElementById('mainCanvas');
     ctx = canvas.getContext("2d");
-
-    // Base array size and sort speed on device orientation
-    if (window.innerHeight / window.innerWidth > 1.5) {
-        arraySize = 50;
-        delayTime = 15;
-        landscape = 0;
-    }
 
     // Populate new array
     array = [];
@@ -20,34 +13,26 @@ function init() {
     }
     drawArr();
 
-    // Randomize after a set delay
+    // Start randomize after a one second delay
     setTimeout(() => {
         randomizeArray();
     }, 1000);
 
     resizeCanvas();
 
-    // Run the algorithm selected when start button is clicked
-    document.getElementById("startbtn").addEventListener("click", function() {
-        let algo = document.getElementById("algoselect");
-
-        switch (algo.value) {
-            case "bubble":
-                bubbleSort();
-                break;
-            case "insertion":
-                insertionSort();
-                break;
-            case "merge":
-                mergeSort(array);
-                break;
-            default:
-        }
-    }, false);
+    // Run selected algorithm when start button is clicked
+    document.getElementById("startbtn").addEventListener("click", runSort);
 } 
 
 async function randomizeArray() {
     disableButtons("randomize");
+
+    // Base array size and sort speed on device orientation
+    if (window.innerHeight / window.innerWidth > 1.5) {
+        arraySize = 50;
+        delayTime = 15;
+        landscape = 0;
+    }
 
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -65,7 +50,7 @@ function drawArr(beingSorted) {
 
     for (let i = 0; i < arraySize; i++) { 
         if (i == beingSorted) {
-            ctx.fillStyle = "hsl(0, 0%, 0%)";
+            ctx.fillStyle = "hsl(0, 0%, 80%)";
         } else {
             ctx.fillStyle = getHSL(array[i]);
         }
@@ -74,10 +59,62 @@ function drawArr(beingSorted) {
     }
 }
 
+function runSort() {
+    // Get the algorithm selected in dropdown menu...
+    let algo = document.getElementById("algoselect");
+    disableButtons("sorting");
+
+    // Execute algorithms based on selection
+    switch (algo.value) {
+        case "selection":
+            selectionSort();
+            break;
+        
+        case "bubble":
+            bubbleSort();
+            break;
+
+        case "insertion":
+            insertionSort();
+            break;
+
+        case "quick":
+            // Slowing the sorting a bit... Quicksort is too quick!!!
+            // While quick is the algorithms' advantage, this project's point is to visualize the sorting
+            // instead of focusing on the efficiency/speed of the algorithms
+            delayTime = 15;
+            quickSort(0, arraySize-1);
+            break;
+
+        default:
+    }
+}
+
+async function selectionSort() {
+    let i, j, min;
+
+    for (i = 0; i < arraySize; i++) {
+        min = i;
+        j = i + 1;
+
+        while (j < arraySize) {
+            if (array[j] < array[min]) {
+                min = j;
+            }
+            await sleep(delayTime);
+            drawArr(j);
+            j++;
+        }
+        await swap(min, i);
+        drawArr(min);
+    }
+    drawArr();
+    enableButtons();
+}
+
 async function bubbleSort() {
     let n, i, j;
     let end = arraySize;
-    disableButtons("sorting");
 
     for (n = 0; n < end; end--) {
         for (i = 0, j = 1; i < arraySize; i++, j++) {
@@ -93,7 +130,6 @@ async function bubbleSort() {
 
 async function insertionSort() {
     let key, i, j;
-    disableButtons("sorting");
 
     for (i = 1; i < arraySize; i++) {
         key = array[i];
@@ -111,44 +147,66 @@ async function insertionSort() {
     enableButtons();
 }
 
-function mergeSort(array) {
-    let middle, left, right;
+async function quickSort(lowIndex, highIndex) {
+    // If the array contains more than one element...
+    if (lowIndex < highIndex) {
+        pendingRecursion++;
 
-    if (array.length > 1) {
-        middle = array.length / 2;
-        left = array.splice(0, middle);
-        right = array;
+        // Divide the array by the pivot
+        let pivot = await partition(lowIndex, highIndex);
 
-        console.log(left, right);
-        return merge(mergeSort(left), mergeSort(right));
-    } else {
-        return array;
+        // Quicksort the left and right sub-arrays
+        quickSort(lowIndex, pivot - 1);
+        quickSort(pivot + 1, highIndex);
+
+        pendingRecursion--;
+    }
+    drawArr();
+
+    // Reset only when all the recursions are done
+    if (pendingRecursion == 0) {
+        delayTime = 6;
+        enableButtons();
     }
 }
 
-function merge(left, right) {
-    let resultArray = [], leftIndex = 0, rightIndex = 0;
-    while (left.length > leftIndex && right.length > rightIndex) {
+// Pick the last index as pivot and place it in the corret positiion in sorted array
+async function partition(lowIndex, highIndex) {
+    let pivot = array[highIndex], left = lowIndex, right = highIndex - 1;
 
-        // Push left into array if it is smaller vice versa
-        if (left[leftIndex] < right[rightIndex]) {
-        resultArray.push(left[leftIndex]);
-        leftIndex++;
-        } else {
-        resultArray.push(right[rightIndex]);
-        rightIndex++;
+    // While the left index is not greater than the right index
+    while (left <= right) {
+
+        // Swap left and right values if they are greater and lesser than the pivot, respectively
+        // Increment/decrement left/right indices afterwards
+        if (array[left] > pivot && array[right] < pivot) {
+            await swap(left, right);
+            drawArr(right);
+            left++;
+            right--;
         }
+
+        // Increment/decrement left/right index if the value on the left/right is already in the correct side of the array
+        while (array[left] < pivot) {
+            await sleep(delayTime);
+            drawArr(left);
+            left++;
+        }
+        while (array[right] > pivot) {
+            await sleep(delayTime);
+            drawArr(right);
+            right--;
+        } 
     }
-    
-    if (leftIndex < rightIndex) {
-        console.log(resultArray);
-        return resultArray.concat(left.slice(leftIndex));
-    } else {
-        console.log(resultArray);
-        return resultArray.concat(right.slice(rightIndex));
-    }
+
+    // Place pivot in its' sorted place in the array
+    await swap(left, highIndex);
+    drawArr(highIndex);
+    // Return the pivot which is now the left value
+    return left;
 }
 
+// Swap places with indice x and y in array
 async function swap(x, y) {
     await sleep(delayTime);
     let temp = array[x];
