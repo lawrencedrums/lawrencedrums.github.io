@@ -94,17 +94,6 @@ function disableButtons(state) {
     document.getElementById("algoselect").disabled = true;
     document.getElementById("randombtn").disabled = true;
     document.getElementById("startbtn").disabled = true;
-
-    // switch (state) {
-    //     case "randomize":
-    //         console.log("Randomizing...")
-    //         break;
-    //     case "sorting":
-    //         console.log("Sorting...")
-    //         break;
-    //     default:
-    //         console.log("Initializing..."); 
-    // }
 }
 
 function enableButtons() {

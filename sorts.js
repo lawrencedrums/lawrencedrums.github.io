@@ -94,7 +94,7 @@ async function partition(lowIndex, highIndex) {
             right--;
         }
 
-        // Increment/decrement left/right index if the value on the left/right is already in the correct side of the array
+        // Increment/decrement left/right index if the values are already in the correct side
         while (array[left] < pivot) {
             await sleep(delayTime);
             drawArr(left);
