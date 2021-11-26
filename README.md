@@ -6,4 +6,4 @@ A sorting algorithm is a process that puts elements of a list in a certain order
  - Create a sorting visualizer webapp using JavaScript, HTML and CSS.
  - Learn and practise using the above-mentioned languages.
  - Solidify understanding of sorting algorithms of different efficiency.
- - Familiarise with version control via GitHub.
+ - Familiarise with version control using Git and GitHub.
