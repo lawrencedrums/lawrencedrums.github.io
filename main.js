@@ -5,7 +5,7 @@ let array,
   arraySize,
   landscape,
   delayTime,
-  pendingRecursion = 0;
+  recursionDepth = 0;
 
 // Initialize
 async function init() {
@@ -27,7 +27,7 @@ async function init() {
   // Start randomize after a small delay
   setTimeout(() => {
     randomizeArray();
-  }, 300);
+  }, 200);
 
   // Run selected algorithm when start button is clicked
   document.getElementById("startbtn").addEventListener("click", runSort);
@@ -44,21 +44,21 @@ async function randomizeArray() {
 
 // Draw rectangles in array instantly.
 // Colour rectangle light grey if that element is being sorted or compared.
-function drawArr(beingSorted) {
+function drawArr(idxBeingSorted) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let i = 0; i < arraySize; i++) {
-    if (i == beingSorted) {
-      ctx.fillStyle = "hsl(0, 0%, 80%)";
+    if (i == idxBeingSorted) {
+      ctx.fillStyle = "hsl(0, 0%, 80%)"; // fill rec gray
     } else {
       ctx.fillStyle = getHSL(array[i]);
     }
 
-    // if (!true) rect = getPosBars(i, array[i]);
-    rect = getPosSquares(i);
+    rect = getPosBars(i, array[i]);
+    // rect = getPosSquares(i);
 
     ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
