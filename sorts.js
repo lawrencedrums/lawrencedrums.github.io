@@ -110,13 +110,14 @@ async function partition(lowIndex, highIndex) {
     // Place pivot in its' sorted place in the array
     await swap(left, highIndex);
     drawArr(highIndex);
+    
     // Return the pivot which is now the left value
     return left;
 }
 
 // Swap places with indice x and y in array
 async function swap(x, y) {
-    await sleep(delayTime);
+    await sleep(1);
     let temp = array[x];
     array[x] = array[y];
     array[y] = temp;

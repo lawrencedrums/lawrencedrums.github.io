@@ -1,4 +1,4 @@
-let array, canvas, ctx, rect, arraySize, landscape, delayTime, pendingRecursion = 0;
+let array, canvas, ctx, rect, rectY, rectWidth, arraySize, landscape, delayTime, pendingRecursion = 0;
 
 // Initialize 
 async function init() {
@@ -7,17 +7,18 @@ async function init() {
     canvas = document.getElementById('mainCanvas');
     ctx = canvas.getContext("2d");
 
-    resizeCanvas();
+    initCanvas();
 
-    // Populate new array, draw each rectangle bar one by one
+    // Populate main array
     array = [];
     for (let i = 1; i <= arraySize; i++) {
         array.push(i);
-        await sleep(15);
-        drawArr();
     }
 
-    // Start randomize after a small delay
+    // draw main array
+    drawArr();
+
+    // Start randomizing after a small delay
     setTimeout(() => {
         randomizeArray();
     }, 300);
@@ -35,12 +36,8 @@ async function randomizeArray() {
     enableButtons();
 }
 
-// Draw rectangles in array instantly. 
-// Colour rectangle light grey if that element is being sorted or compared.
+// Draw rectangles in array. Rectangle turns grey when it is being sorted or compared.
 function drawArr(beingSorted) {  
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < arraySize; i++) { 
@@ -50,7 +47,7 @@ function drawArr(beingSorted) {
             ctx.fillStyle = getHSL(array[i]);
         }
         rect = getPos(i, array[i]);
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.fillRect(rect.x, rectY, rectWidth, rect.height);
     }
 }
 
@@ -75,18 +72,19 @@ function runSort() {
             break;
 
         case "quick":
-            // Slowing the sorting a bit... Quicksort is too quick!!!
-            // While being quick is the algorithms' advantage, it's hard to see the algorithm work 
-            if (landscape == 0) {
-                delayTime = 20;
-            } else {
+            // Slowing the sorting a bit... Quicksort is too quick
+            // The project's aim is to visualise, not compare sorting speed
+            if (landscape == 1) {
                 delayTime = 40;
+            } else {
+                delayTime = 20;
             }
             quickSort(0, arraySize-1);
             break;
 
         default:
             enableButtons();
+            break;
     }
 }
 
@@ -122,12 +120,13 @@ async function prettierShuffle() {
             // Swap them and push them into shuffled list of numbers
             await swap(randomIndex, randomIndexTwo); 
             shuffledNumber.push(randomIndex, randomIndexTwo)
+
             drawArr();
         }
     }
 }
 
-// Calculate HSL Hue value based on number size in array
+// Calculate HSL Hue value based on number in array
 function getHSL(i) {
     if (i === 0 || i === arraySize) {
         return "hsl(0, 100%, 50%)";
@@ -141,25 +140,34 @@ function getHSL(i) {
 function getPos(i, num) {
     let rectangle = {
         x: 20 + i * (canvas.width - 40) / arraySize,
-        y: canvas.height - 20,
-        width: (canvas.width - 20) / arraySize - 2,
-        height: ((canvas.height - 40) / arraySize) * -num
+
+        height: ((canvas.height - canvasHeightOffset) / arraySize) * -num
     };
     return rectangle;
 }
 
-// Resize canvas in the event of size or orientation changes
-function resizeCanvas() {
-    // Set array size and sort speed based on device orientation
+// Resize canvas, array size, and sorting speed in the event of size or orientation changes to the device
+function initCanvas() {
+    // if portrait
     if (window.innerHeight / window.innerWidth > 1.5) {
-        arraySize = 50;
-        delayTime = 20;
-        landscape = 1;
-    } else {
-        arraySize = 100;
-        delayTime = 8;
         landscape = 0;
+        arraySize = 60;
+        delayTime = 8;
+        canvasHeightOffset = 180;
+    } else { // if landscape
+        landscape = 1;
+        arraySize = 150;
+        delayTime = 1;
+        canvasHeightOffset = 100;
     }
+
+    // Get size of canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Y position and width of each rect are always the same
+    rectY = canvas.height - 20;
+    rectWidth = (canvas.width - 20) / arraySize - 1;
 
     window.addEventListener('resize', drawArr, false);
     window.addEventListener('orientationchange', drawArr, false);
