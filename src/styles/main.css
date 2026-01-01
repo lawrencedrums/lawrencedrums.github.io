@@ -9,6 +9,7 @@
 @import './variables.css';
 @import './reset.css';
 @import './grid.css';
+@import './components.css';
 
 /* Global Styles */
 html {
