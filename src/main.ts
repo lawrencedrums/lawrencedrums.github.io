@@ -3,6 +3,8 @@
  * This file initializes the app and sets up the router
  */
 
+import './styles/main.css';
+
 console.log('Application initialized');
 
 // Temporary initialization - will be replaced with router and app setup
