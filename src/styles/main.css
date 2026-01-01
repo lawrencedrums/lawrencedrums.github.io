@@ -8,6 +8,7 @@
 /* Import design tokens and reset */
 @import './variables.css';
 @import './reset.css';
+@import './grid.css';
 
 /* Global Styles */
 html {
