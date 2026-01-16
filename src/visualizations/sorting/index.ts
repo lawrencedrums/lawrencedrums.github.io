@@ -7,6 +7,10 @@
  * - Types and interfaces for the sorting system
  */
 
+import { VisualizationRegistry } from '../core'
+import { SortingVisualizer } from './SortingVisualizer'
+import type { SortingConfig } from './types'
+
 // Main visualizer
 export { SortingVisualizer } from './SortingVisualizer'
 
@@ -34,3 +38,19 @@ export type {
 } from './types'
 
 export { DEFAULT_SORTING_CONFIG } from './types'
+
+/**
+ * Register SortingVisualizer with the visualization registry
+ * This allows the visualization to be discovered and instantiated via the registry
+ */
+VisualizationRegistry.register(
+  {
+    id: 'sorting-visualizer',
+    name: 'Sorting Visualizer',
+    description: 'Visualize sorting algorithms step by step with interactive controls',
+    category: 'sorting',
+    tags: ['sorting', 'algorithms', 'comparison', 'interactive'],
+    difficulty: 1,
+  },
+  (config?: Partial<SortingConfig>) => new SortingVisualizer(config)
+)
