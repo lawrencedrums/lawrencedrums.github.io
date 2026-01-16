@@ -158,12 +158,6 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
    */
   generateSteps(): SortingStep[] {
     const result = this.algorithm.sort(this.array)
-
-    // Update metrics from algorithm result
-    this.metrics.comparisons = result.comparisons
-    this.metrics.swaps = result.swaps
-    this.metrics.arrayAccesses = result.arrayAccesses
-
     return result.steps
   }
 
@@ -171,7 +165,10 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
    * Render a single animation step
    */
   renderStep(step: SortingStep): void {
-    const { data } = step
+    const { action, data } = step
+
+    // Update metrics based on step action
+    this.updateMetricsFromStep(action, data)
 
     // Update array state
     this.array = [...data.array]
@@ -186,6 +183,34 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
 
     // Render the current state
     this.render()
+  }
+
+  /**
+   * Update performance metrics based on step action
+   */
+  private updateMetricsFromStep(action: string, data: SortingStepData): void {
+    switch (action) {
+      case 'compare':
+        this.metrics.comparisons++
+        // Reading 2 elements to compare
+        this.metrics.arrayAccesses += 2
+        break
+
+      case 'swap':
+        this.metrics.swaps++
+        // Reading 2 elements and writing 2 elements
+        this.metrics.arrayAccesses += 4
+        break
+
+      case 'set':
+        // Writing 1 element
+        this.metrics.arrayAccesses++
+        if (data.setting) {
+          // Reading 1 element (the value being set)
+          this.metrics.arrayAccesses++
+        }
+        break
+    }
   }
 
   /**
