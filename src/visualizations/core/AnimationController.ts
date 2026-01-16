@@ -288,10 +288,15 @@ export class AnimationController {
       return
     }
 
-    // Execute the step through visualization
-    // The visualization handles its own step execution
-    // We just need to schedule the next tick
-    this.timeoutId = setTimeout(this.tick, this.stepDelay)
+    // Execute the next step
+    const hasMore = this.visualization.tick()
+
+    // Schedule next tick if there are more steps
+    if (hasMore) {
+      this.timeoutId = setTimeout(this.tick, this.stepDelay)
+    } else {
+      this.stopLoop()
+    }
   }
 
   /**
