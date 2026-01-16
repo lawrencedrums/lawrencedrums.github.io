@@ -262,6 +262,22 @@ export abstract class Visualization<
   }
 
   /**
+   * Advance one step while playing (called by AnimationController)
+   * Returns true if there are more steps, false if completed
+   */
+  tick(): boolean {
+    if (this.state !== 'playing') return false
+
+    if (this.currentStepIndex >= this.animationQueue.length) {
+      this.onComplete()
+      return false
+    }
+
+    this.executeNextStep()
+    return this.state === 'playing'
+  }
+
+  /**
    * Called when all animation steps are complete
    */
   protected onComplete(): void {
