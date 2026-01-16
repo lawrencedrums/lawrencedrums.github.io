@@ -10,5 +10,5 @@
 // Re-export everything from core
 export * from './core'
 
-// Sorting visualizations will be exported here in Phase 3
-// export * from './sorting'
+// Sorting visualizations
+export * from './sorting'
