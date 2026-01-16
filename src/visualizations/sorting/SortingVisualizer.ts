@@ -226,8 +226,9 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
         break
 
       case 'mark-pivot':
-        if (data.pivot !== undefined && this.bars[data.pivot]) {
-          this.bars[data.pivot].state = 'pivot'
+        if (data.pivot !== undefined) {
+          const bar = this.bars[data.pivot]
+          if (bar) bar.state = 'pivot'
         }
         break
 
@@ -235,8 +236,9 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
         if (data.range) {
           const [start, end] = data.range
           for (let i = start; i <= end; i++) {
-            if (this.bars[i] && !this.sortedIndices.has(i)) {
-              this.bars[i].state = 'range'
+            const bar = this.bars[i]
+            if (bar && !this.sortedIndices.has(i)) {
+              bar.state = 'range'
             }
           }
         }
@@ -253,8 +255,9 @@ export class SortingVisualizer extends Visualization<SortingConfig, SortingStepD
     }
 
     // Pivot takes precedence over range
-    if (data.pivot !== undefined && this.bars[data.pivot]) {
-      this.bars[data.pivot].state = 'pivot'
+    if (data.pivot !== undefined) {
+      const pivotBar = this.bars[data.pivot]
+      if (pivotBar) pivotBar.state = 'pivot'
     }
   }
 
