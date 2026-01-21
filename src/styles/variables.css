@@ -1,8 +1,8 @@
 /**
  * Design Tokens - CSS Custom Properties
  *
- * This file defines all design tokens used throughout the application.
- * Using CSS custom properties allows for easy theming and consistency.
+ * Mobile-first design system with responsive scaling.
+ * Base values optimized for mobile, with larger values for desktop.
  */
 
 :root {
@@ -35,6 +35,11 @@
   --color-bar-active: #94a3b8;
   --color-bar-sorted: #10b981;
 
+  /* Border color for components */
+  --color-border: #334155;
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+
   /* Spacing Scale (based on 4px base unit) */
   --space-xs: 0.25rem;   /* 4px */
   --space-sm: 0.5rem;    /* 8px */
@@ -44,13 +49,14 @@
   --space-2xl: 3rem;     /* 48px */
   --space-3xl: 4rem;     /* 64px */
 
-  /* Typography Scale */
+  /* Typography Scale - Mobile first (smaller base) */
   --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-family-mono: 'Fira Code', 'Cascadia Code', Consolas, Monaco, monospace;
 
   --font-size-xs: 0.75rem;    /* 12px */
   --font-size-sm: 0.875rem;   /* 14px */
   --font-size-base: 1rem;     /* 16px */
+  --font-size-md: 1rem;       /* 16px alias */
   --font-size-lg: 1.125rem;   /* 18px */
   --font-size-xl: 1.25rem;    /* 20px */
   --font-size-2xl: 1.5rem;    /* 24px */
@@ -94,6 +100,12 @@
   --z-popover: 600;
   --z-tooltip: 700;
 
+  /* Breakpoints (for reference in JS) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
   /* Layout */
   --max-width-sm: 640px;
   --max-width-md: 768px;
@@ -101,6 +113,18 @@
   --max-width-xl: 1280px;
   --max-width-2xl: 1536px;
 
-  --header-height: 64px;
-  --footer-height: 80px;
+  /* Mobile-first header/footer heights */
+  --header-height: 56px;
+  --footer-height: auto;
+
+  /* Touch-friendly sizes */
+  --touch-target-min: 44px;
+  --input-height: 44px;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  :root {
+    --header-height: 64px;
+  }
 }

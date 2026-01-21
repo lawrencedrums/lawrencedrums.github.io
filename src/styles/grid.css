@@ -1,109 +1,55 @@
 /**
- * Responsive Grid System
+ * Responsive Grid System - Mobile First
  *
- * A lightweight, flexible grid system using CSS Grid and Flexbox.
- * Provides both grid-based layouts and flexbox utilities for responsive design.
+ * Vertical layout by default (mobile), expanding horizontally on larger screens.
+ * Uses CSS Grid and Flexbox for flexible, responsive layouts.
  */
 
 /* ========================================
    CSS Grid Layouts
    ======================================== */
 
-/* Basic Grid Container */
+/* Basic Grid Container - single column by default */
 .grid {
   display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-md);
 }
 
-/* Column Templates */
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-cols-12 {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-/* Auto-fit Grid (responsive by default) */
+/* Auto-fit Grid - responsive, starts single column */
 .grid-auto-fit {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.grid-auto-fit-sm {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-.grid-auto-fit-lg {
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-}
-
-/* Gap Sizes */
-.gap-xs {
-  gap: var(--space-xs);
-}
-
-.gap-sm {
-  gap: var(--space-sm);
-}
-
-.gap-md {
-  gap: var(--space-md);
-}
-
-.gap-lg {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-lg);
 }
 
-.gap-xl {
+.grid-auto-fit-sm {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.grid-auto-fit-lg {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-xl);
 }
 
-/* Column Span */
-.col-span-1 {
-  grid-column: span 1 / span 1;
-}
+/* Gap Sizes */
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
 
-.col-span-2 {
-  grid-column: span 2 / span 2;
-}
-
-.col-span-3 {
-  grid-column: span 3 / span 3;
-}
-
-.col-span-4 {
-  grid-column: span 4 / span 4;
-}
-
-.col-span-6 {
-  grid-column: span 6 / span 6;
-}
-
-.col-span-full {
-  grid-column: 1 / -1;
-}
+/* Column Span (for multi-column layouts) */
+.col-span-full { grid-column: 1 / -1; }
 
 /* ========================================
-   Flexbox Utilities
+   Flexbox Utilities - Mobile First
    ======================================== */
 
-/* Flex Container */
+/* Flex Container - column by default for mobile */
 .flex {
   display: flex;
 }
@@ -112,17 +58,17 @@
   display: inline-flex;
 }
 
-/* Direction */
+/* Direction - column first for mobile vertical layout */
+.flex-col {
+  flex-direction: column;
+}
+
 .flex-row {
   flex-direction: row;
 }
 
 .flex-row-reverse {
   flex-direction: row-reverse;
-}
-
-.flex-col {
-  flex-direction: column;
 }
 
 .flex-col-reverse {
@@ -139,182 +85,135 @@
 }
 
 /* Justify Content */
-.justify-start {
-  justify-content: flex-start;
-}
-
-.justify-end {
-  justify-content: flex-end;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-around {
-  justify-content: space-around;
-}
-
-.justify-evenly {
-  justify-content: space-evenly;
-}
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
 
 /* Align Items */
-.items-start {
-  align-items: flex-start;
-}
-
-.items-end {
-  align-items: flex-end;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.items-baseline {
-  align-items: baseline;
-}
-
-.items-stretch {
-  align-items: stretch;
-}
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.items-stretch { align-items: stretch; }
 
 /* Gap for Flexbox */
-.flex-gap-xs {
-  gap: var(--space-xs);
-}
-
-.flex-gap-sm {
-  gap: var(--space-sm);
-}
-
-.flex-gap-md {
-  gap: var(--space-md);
-}
-
-.flex-gap-lg {
-  gap: var(--space-lg);
-}
-
-.flex-gap-xl {
-  gap: var(--space-xl);
-}
+.flex-gap-xs { gap: var(--space-xs); }
+.flex-gap-sm { gap: var(--space-sm); }
+.flex-gap-md { gap: var(--space-md); }
+.flex-gap-lg { gap: var(--space-lg); }
+.flex-gap-xl { gap: var(--space-xl); }
 
 /* Flex Growth/Shrink */
-.flex-1 {
-  flex: 1 1 0%;
-}
-
-.flex-auto {
-  flex: 1 1 auto;
-}
-
-.flex-none {
-  flex: none;
-}
+.flex-1 { flex: 1 1 0%; }
+.flex-auto { flex: 1 1 auto; }
+.flex-none { flex: none; }
+.flex-grow { flex-grow: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
 
 /* ========================================
    Responsive Modifiers (Mobile First)
    ======================================== */
 
+/* Small screens (640px+) */
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .grid-auto-fit-sm {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
 /* Tablet and up (768px+) */
 @media (min-width: 768px) {
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .md\:flex-row { flex-direction: row; }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:col-span-2 { grid-column: span 2 / span 2; }
+  .md\:col-span-3 { grid-column: span 3 / span 3; }
+
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .md\:flex-row {
-    flex-direction: row;
-  }
-
-  .md\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
-  .md\:col-span-3 {
-    grid-column: span 3 / span 3;
+  .grid-auto-fit-lg {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
 }
 
 /* Desktop and up (1024px+) */
 @media (min-width: 1024px) {
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .lg\:col-span-4 {
-    grid-column: span 4 / span 4;
-  }
-
-  .lg\:col-span-6 {
-    grid-column: span 6 / span 6;
-  }
+  .lg\:flex-row { flex-direction: row; }
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .lg\:col-span-4 { grid-column: span 4 / span 4; }
+  .lg\:col-span-6 { grid-column: span 6 / span 6; }
 }
 
 /* Large Desktop (1280px+) */
 @media (min-width: 1280px) {
-  .xl\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .xl\:grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
+  .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .xl\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 
 /* ========================================
-   Common Layout Patterns
+   Common Layout Patterns - Mobile First
    ======================================== */
 
 /* Centered Content */
 .center-content {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-/* Card Grid (common pattern for galleries) */
+/* Card Grid - single column on mobile, responsive on larger */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-lg);
-  padding: var(--space-lg);
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
 }
 
-/* Sidebar Layout */
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+  }
+}
+
+/* Sidebar Layout - stacked on mobile, side-by-side on desktop */
 .sidebar-layout {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-lg);
 }
 
 @media (min-width: 1024px) {
   .sidebar-layout {
-    grid-template-columns: 250px 1fr;
+    flex-direction: row;
+  }
+
+  .sidebar-layout > .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-layout > .main-content {
+    flex: 1;
+    min-width: 0;
   }
 }
 
-/* Stack (vertical spacing) */
+/* Stack (vertical spacing) - native mobile pattern */
 .stack {
   display: flex;
   flex-direction: column;
@@ -332,10 +231,94 @@
   margin-top: var(--space-lg);
 }
 
-/* Cluster (horizontal spacing) */
+.stack-xl > * + * {
+  margin-top: var(--space-xl);
+}
+
+/* Cluster (horizontal spacing with wrap) */
 .cluster {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .cluster {
+    gap: var(--space-md);
+  }
+}
+
+/* Full-width section */
+.section {
+  width: 100%;
+  padding: var(--space-lg) var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-2xl) var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: var(--space-3xl) var(--space-xl);
+  }
+}
+
+/* ========================================
+   Visibility Utilities
+   ======================================== */
+
+.hidden { display: none; }
+.block { display: block; }
+
+/* Hide on mobile, show on larger screens */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+
+  .hide-mobile.flex,
+  .hide-mobile.inline-flex {
+    display: flex;
+  }
+}
+
+/* Show on mobile, hide on larger screens */
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* ========================================
+   Width Utilities
+   ======================================== */
+
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.max-w-full { max-width: 100%; }
+.min-w-0 { min-width: 0; }
+
+/* ========================================
+   Text Alignment
+   ======================================== */
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+@media (min-width: 768px) {
+  .md\:text-left { text-align: left; }
+  .md\:text-center { text-align: center; }
 }
