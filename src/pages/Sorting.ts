@@ -1,8 +1,8 @@
 /**
- * Sorting Visualizer Page
+ * Sorting Visualizer Page - Mobile First
  *
- * Interactive page for visualizing sorting algorithms with controls
- * for algorithm selection, array configuration, and playback.
+ * Interactive page for visualizing sorting algorithms with touch-friendly
+ * controls and responsive vertical layout.
  */
 
 import { SortingVisualizer, SORTING_ALGORITHMS } from '../visualizations/sorting'
@@ -27,26 +27,51 @@ function injectStyles(): void {
     .sorting-page {
       display: flex;
       flex-direction: column;
-      gap: var(--space-lg);
-      padding: var(--space-lg) 0;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      max-width: var(--max-width-xl);
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page {
+        gap: var(--space-lg);
+        padding: var(--space-lg);
+      }
     }
 
     .sorting-page__header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: var(--space-md);
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
 
     .sorting-page__title {
+      font-size: var(--font-size-2xl);
       margin: 0;
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__title {
+        font-size: var(--font-size-3xl);
+      }
     }
 
     .sorting-page__back {
       color: var(--color-text-secondary);
       text-decoration: none;
       font-size: var(--font-size-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
     }
 
     .sorting-page__back:hover {
@@ -58,49 +83,73 @@ function injectStyles(): void {
       border-radius: var(--radius-md);
       border: 1px solid var(--color-border);
       overflow: hidden;
-      min-height: 400px;
+      min-height: 250px;
+      width: 100%;
+      transition: none;
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__canvas-container {
+        min-height: 400px;
+      }
     }
 
     .sorting-page__options {
       display: flex;
-      gap: var(--space-lg);
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: var(--space-md);
       padding: var(--space-md);
       background: var(--color-surface);
       border-radius: var(--radius-md);
       border: 1px solid var(--color-border);
     }
 
+    @media (min-width: 768px) {
+      .sorting-page__options {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+      }
+    }
+
     .sorting-page__option {
       display: flex;
       flex-direction: column;
       gap: var(--space-xs);
+      flex: 1;
+      min-width: 0;
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__option {
+        flex: 0 0 auto;
+        min-width: 180px;
+      }
     }
 
     .sorting-page__option label {
       font-size: var(--font-size-sm);
       color: var(--color-text-secondary);
+      font-weight: var(--font-weight-medium);
     }
 
     .sorting-page__option select,
-    .sorting-page__option input {
-      padding: var(--space-xs) var(--space-sm);
-      background: var(--color-surface-hover);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      color: var(--color-text);
-      font-size: var(--font-size-sm);
+    .sorting-page__option input[type="text"],
+    .sorting-page__option input[type="number"] {
+      width: 100%;
     }
 
     .sorting-page__option input[type="range"] {
-      width: 150px;
+      width: 100%;
+      margin: 0;
     }
 
     .sorting-page__option-value {
-      font-size: var(--font-size-xs);
+      font-size: var(--font-size-sm);
       color: var(--color-text-secondary);
       min-width: 40px;
-      text-align: right;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
     }
 
     .sorting-page__option-row {
@@ -110,18 +159,14 @@ function injectStyles(): void {
     }
 
     .sorting-page__generate-btn {
-      padding: var(--space-sm) var(--space-md);
-      background: var(--color-secondary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: var(--font-size-sm);
-      align-self: flex-end;
+      width: 100%;
+      min-height: var(--touch-target-min);
     }
 
-    .sorting-page__generate-btn:hover {
-      opacity: 0.9;
+    @media (min-width: 768px) {
+      .sorting-page__generate-btn {
+        width: auto;
+      }
     }
 
     .sorting-page__info {
@@ -133,26 +178,48 @@ function injectStyles(): void {
 
     .sorting-page__info h3 {
       margin: 0 0 var(--space-sm) 0;
-      font-size: var(--font-size-md);
+      font-size: var(--font-size-lg);
     }
 
     .sorting-page__info p {
-      margin: 0 0 var(--space-sm) 0;
+      margin: 0 0 var(--space-md) 0;
       color: var(--color-text-secondary);
       font-size: var(--font-size-sm);
     }
 
     .sorting-page__info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: 1fr;
       gap: var(--space-sm);
-      margin-top: var(--space-md);
+    }
+
+    @media (min-width: 480px) {
+      .sorting-page__info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__info-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .sorting-page__info-item {
       display: flex;
       justify-content: space-between;
       font-size: var(--font-size-sm);
+      padding: var(--space-xs) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    @media (min-width: 768px) {
+      .sorting-page__info-item {
+        flex-direction: column;
+        gap: var(--space-xs);
+        border-bottom: none;
+        text-align: center;
+      }
     }
 
     .sorting-page__info-item span:first-child {
@@ -160,7 +227,7 @@ function injectStyles(): void {
     }
 
     .sorting-page__info-item span:last-child {
-      font-weight: 500;
+      font-weight: var(--font-weight-medium);
     }
   `
   document.head.appendChild(style)
@@ -174,7 +241,7 @@ export function SortingPage(): HTMLElement {
 
   // Create main container
   const container = document.createElement('div')
-  container.className = 'container sorting-page'
+  container.className = 'sorting-page'
 
   // State
   let visualizer: SortingVisualizer | null = null
@@ -188,8 +255,10 @@ export function SortingPage(): HTMLElement {
   const header = document.createElement('div')
   header.className = 'sorting-page__header'
   header.innerHTML = `
+    <a href="#/" class="sorting-page__back">
+      <span aria-hidden="true">←</span> Back to Home
+    </a>
     <h1 class="sorting-page__title">Sorting Visualizer</h1>
-    <a href="#/" class="sorting-page__back">← Back to Home</a>
   `
   container.appendChild(header)
 
@@ -204,7 +273,7 @@ export function SortingPage(): HTMLElement {
 
   const algoSelect = document.createElement('select')
   algoSelect.id = 'algo-select'
-  SORTING_ALGORITHMS.forEach(algo => {
+  SORTING_ALGORITHMS.forEach((algo) => {
     const option = document.createElement('option')
     option.value = algo.info.id
     option.textContent = algo.info.name
@@ -227,6 +296,7 @@ export function SortingPage(): HTMLElement {
   sizeSlider.min = '10'
   sizeSlider.max = '200'
   sizeSlider.value = arraySize.toString()
+  sizeSlider.style.flex = '1'
 
   const sizeValue = document.createElement('span')
   sizeValue.className = 'sorting-page__option-value'
@@ -239,7 +309,7 @@ export function SortingPage(): HTMLElement {
 
   // Generate button
   const generateBtn = document.createElement('button')
-  generateBtn.className = 'sorting-page__generate-btn'
+  generateBtn.className = 'btn-secondary sorting-page__generate-btn'
   generateBtn.textContent = 'Generate New Array'
   generateBtn.type = 'button'
   options.appendChild(generateBtn)
@@ -297,10 +367,14 @@ export function SortingPage(): HTMLElement {
    * Initialize the visualizer and controls
    */
   function initialize(): void {
+    // Responsive canvas height
+    const isMobile = window.innerWidth < 768
+    const canvasHeight = isMobile ? 250 : 400
+
     // Create visualizer
     visualizer = new SortingVisualizer({
       arraySize,
-      height: 400,
+      height: canvasHeight,
     })
 
     visualizer.setup(canvasContainer)
@@ -349,13 +423,27 @@ export function SortingPage(): HTMLElement {
 
     // Update initial algorithm info
     updateAlgorithmInfo()
+
+    // Handle window resize
+    const handleResize = (): void => {
+      const newIsMobile = window.innerWidth < 768
+      const newHeight = newIsMobile ? 250 : 400
+      if (visualizer) {
+        visualizer.updateConfig({ height: newHeight })
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // Store resize handler for cleanup
+    ;(container as HTMLElement & { _resizeHandler?: () => void })._resizeHandler = handleResize
   }
 
   /**
    * Handle algorithm change
    */
   algoSelect.addEventListener('change', () => {
-    const algo = SORTING_ALGORITHMS.find(a => a.info.id === algoSelect.value)
+    const algo = SORTING_ALGORITHMS.find((a) => a.info.id === algoSelect.value)
     if (algo) {
       currentAlgorithm = algo
       visualizer?.setAlgorithm(algo)
@@ -395,7 +483,12 @@ export function SortingPage(): HTMLElement {
   })
 
   // Cleanup on navigation
-  const cleanup = () => {
+  const cleanup = (): void => {
+    const resizeHandler = (container as HTMLElement & { _resizeHandler?: () => void })
+      ._resizeHandler
+    if (resizeHandler) {
+      window.removeEventListener('resize', resizeHandler)
+    }
     visualizer?.destroy()
     controller?.destroy()
     controlPanel?.destroy()
