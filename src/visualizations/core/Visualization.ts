@@ -168,12 +168,20 @@ export abstract class Visualization<
     const rect = this.container.getBoundingClientRect()
     const dpr = window.devicePixelRatio || 1
 
-    // Set actual canvas size in memory (scaled for device pixel ratio)
-    this.canvas.width = (this.config.width || rect.width) * dpr
-    this.canvas.height = (this.config.height || rect.height) * dpr
+    // Get dimensions - use config if provided, otherwise use container size
+    const width = this.config.width || rect.width
+    const height = this.config.height || rect.height
 
-    // Scale context to account for device pixel ratio
+    // Skip if dimensions are invalid (container not yet laid out)
+    if (width <= 0 || height <= 0) return
+
+    // Set actual canvas size in memory (scaled for device pixel ratio)
+    this.canvas.width = width * dpr
+    this.canvas.height = height * dpr
+
+    // Reset transform and scale context to account for device pixel ratio
     if (this.ctx) {
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0)
       this.ctx.scale(dpr, dpr)
     }
   }
@@ -331,6 +339,18 @@ export abstract class Visualization<
    */
   updateConfig(config: Partial<TConfig>): void {
     this.config = this.mergeConfig({ ...this.config, ...config })
+
+    // Update canvas style dimensions if they changed
+    if (this.canvas) {
+      if (config.height !== undefined) {
+        this.canvas.style.height = `${this.config.height}px`
+      }
+      if (config.width !== undefined) {
+        this.canvas.style.width = config.width ? `${this.config.width}px` : '100%'
+      }
+      this.resizeCanvas()
+    }
+
     if (this.state === 'idle') {
       this.render()
     }
